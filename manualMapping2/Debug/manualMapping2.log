@@ -1,0 +1,5 @@
+﻿  injection.cpp
+C:\Users\matt0\source\repos\manualMapping2\manualMapping2\injection.cpp(19,16): warning C4244: 'initializing': conversion from 'std::streamoff' to 'UINT', possible loss of data
+C:\Users\matt0\source\repos\manualMapping2\manualMapping2\injection.cpp(33,32): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+injection.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+  manualMapping2.vcxproj -> C:\Users\matt0\source\repos\manualMapping2\Debug\manualMapping2.exe
