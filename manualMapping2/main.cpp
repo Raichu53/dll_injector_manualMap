@@ -24,7 +24,7 @@ int main(void) {
 			HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, false, PID);
 			if (processHandle != nullptr) {
 				if (manualMapping(processHandle, dllName)) {
-					std::cout << "injected successfully";
+					
 				}
 			}
 			CloseHandle(processHandle);
