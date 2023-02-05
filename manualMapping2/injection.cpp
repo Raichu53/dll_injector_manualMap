@@ -92,7 +92,7 @@ bool manualMapping(HANDLE processHandle, const char* dllPath) {
 	for (int i = 0; i < dllFileHeader->NumberOfSections; i++,sectionHeader++) {
 		if (sectionHeader->SizeOfRawData) {
 			if (!WriteProcessMemory(processHandle, targetLocation + sectionHeader->VirtualAddress,
-				dllContent + sectionHeader->PointerToRawData, sectionHeader->SizeOfRawData, nullptr)) {
+				dllContent + sectionHeader->PointerToRawData, sectionHeader->SizeOfRawData, nullptr)) {//dllContent here is used as a base address
 
 				std::cout << "Error : mapping sections failed";
 				VirtualFreeEx(processHandle, targetLocation, 0, MEM_RELEASE);
@@ -101,10 +101,15 @@ bool manualMapping(HANDLE processHandle, const char* dllPath) {
 			}
 		}
 	}
-
+	/*
+	the first 24 bytes of the pe format are useless (DOS header...) so we use them to store our data struct <=> sizeof(MANUAL_MAPPING_DATA) = 12  
+	Therefore data is used as the base address in shellcode() we don't have to pass targetLocation as a param aswell
+	*/
 	memcpy(dllContent,&data, sizeof(data));
-	WriteProcessMemory(processHandle, targetLocation, dllContent, 0x1000, nullptr);
+	/* We have to write the PE Headers to the target Location */
+	WriteProcessMemory(processHandle, targetLocation, dllContent, dllOptHeader->SizeOfHeaders, nullptr);
 	delete dllContent; 
+	/*allocating memory for the shellcode function*/
 	void* pShellCode = VirtualAllocEx(processHandle, nullptr, 0x1000, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 
 	if (pShellCode == nullptr) {
@@ -112,7 +117,7 @@ bool manualMapping(HANDLE processHandle, const char* dllPath) {
 		VirtualFreeEx(processHandle, targetLocation, 0, MEM_RELEASE);
 		return false;
 	}
-
+	/*writing the shellcode function to the memory previously allocated*/
 	WriteProcessMemory(processHandle, pShellCode, shellcode, 0x1000, nullptr);
 
 	HANDLE hThread = CreateRemoteThread(processHandle, nullptr, 0, (LPTHREAD_START_ROUTINE)pShellCode,targetLocation, 0, nullptr);
@@ -124,6 +129,7 @@ bool manualMapping(HANDLE processHandle, const char* dllPath) {
 	}
 	CloseHandle(hThread);
 	
+	/*checking if shellcode reached the end by reading the first 12 bytes of the targetLocation where the data struct as been copied l.108*/
 	HMODULE check = nullptr;
 	while (!check) {
 		MANUAL_MAPPING_DATA data_checked = { 0 };
