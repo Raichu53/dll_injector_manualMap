@@ -1,9 +1,8 @@
 ﻿  injection.cpp
-C:\Users\matt0\source\repos\manualMapping2\manualMapping2\injection.cpp(14,16): warning C4244: 'initializing': conversion from 'std::streamoff' to 'UINT', possible loss of data
-C:\Users\matt0\source\repos\manualMapping2\manualMapping2\injection.cpp(27,67): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
-  main.cpp
+C:\Users\matt0\source\repos\manualMapping2\manualMapping2\injection.cpp(37,16): warning C4244: 'initializing': conversion from 'std::streamoff' to 'UINT', possible loss of data
+C:\Users\matt0\source\repos\manualMapping2\manualMapping2\injection.cpp(49,32): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 141 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 142 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   manualMapping2.vcxproj -> C:\Users\matt0\source\repos\manualMapping2\Release\manualMapping2.exe
